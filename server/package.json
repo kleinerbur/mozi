@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Backend server that pulls showing info on a given date from supported theatres in Budapest.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "supervisor index.js",
+    "test": "echo \"Error: no test specified\""
+  },
+  "author": "kleinerbur",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "pino": "^8.15.0",
+    "pino-pretty": "^10.2.0",
+    "supervisor": "^0.12.0"
+  }
+}
