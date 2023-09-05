@@ -10,7 +10,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { Backdrop, CircularProgress } from '@mui/material';
 import dayjs from 'dayjs';
 
-const port = 2525;
+const API_host = "http://157.245.23.215";
+// const API_HOST = "http://localhost:2525" // dev
 
 function App() {
     const today = new Date();
@@ -28,7 +29,7 @@ function App() {
     React.useEffect(() => {
         async function fetchData() {
             enableBackdrop(true);
-            let data = await fetch(`http://localhost:${port}/date/${date.toISOString().split('T')[0]}`).then(response => response.json())
+            let data = await fetch(`${API_host}/date/${date.toISOString().split('T')[0]}`).then(response => response.json())
             setFilms(data.films);
             setShowings(data.showings);
             enableBackdrop(false);
