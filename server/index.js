@@ -38,8 +38,8 @@ const logger = pino(
 const app = express(cors());
 const port = 2525; // Bus # in Speed
 const ssl_config = {
-    key:  fs.readFileSync('ssl/server.key', 'utf8'),
-    cert: fs.readFileSync('ssl/server.crt', 'utf8')
+    // key:  fs.readFileSync('ssl/server.key', 'utf8'),
+    // cert: fs.readFileSync('ssl/server.crt', 'utf8')
 }
 https.createServer(ssl_config, app).listen(port, logger.debug(`Server is listening on port ${port}`));
 
@@ -89,6 +89,11 @@ app.get('/date/:date/', async(req,res) => {
 })
 
 process.on('SIGINT', () => {
-    logger.debug('Shutting down...')
+    logger.debug('[SIGINT] Shutting down...')
+    process.exit()
+})
+
+process.on('SIGTERM', () => {
+    logger.debug('[SIGTERM] Shutting down...')
     process.exit()
 })
