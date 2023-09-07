@@ -23,7 +23,7 @@ const logger = pino(
                 level: 'debug',
                 target: 'pino/file',
                 options: {
-                    destination: `${today}.log`,
+                    destination: `logs/${today}.log`,
                 },
             }
         ]
