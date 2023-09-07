@@ -1,6 +1,11 @@
+import http  from 'http';
+import https from 'https';
+
+import fs      from 'fs';
 import express from 'express';
-import cors from 'cors';
-import pino from 'pino';
+import cors    from 'cors';
+import pino    from 'pino';
+
 import Assistant from './Assistant.js';
 
 const today = new Date().toISOString().split('T')[0]
@@ -30,9 +35,13 @@ const logger = pino(
     })
 );
 
-const app = express();
-app.use(cors());
+const app = express(cors());
 const port = 2525; // Bus # in Speed
+const ssl_config = {
+    key:  fs.readFileSync('ssl/server.key', 'utf8'),
+    cert: fs.readFileSync('ssl/server.crt', 'utf8')
+}
+https.createServer(ssl_config, app).listen(port, logger.debug(`Server is listening on port ${port}`));
 
 app.get('/', (req,res) => {
     logger.info({
@@ -79,7 +88,6 @@ app.get('/date/:date/', async(req,res) => {
     }
 })
 
-app.listen(port, logger.debug(`Server is listening on port ${port}`));
 process.on('SIGINT', () => {
     logger.debug('Shutting down...')
     process.exit()
