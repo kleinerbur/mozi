@@ -3,22 +3,42 @@ import cors from 'cors';
 import pino from 'pino';
 import Assistant from './Assistant.js';
 
-const logger = pino({
-    level: 'debug',
-    transport: {
-        target: 'pino-pretty',
-        options: {
-            colorize: true,
-            singleLine: true
-        }
-    }
-});
+const today = new Date().toISOString().split('T')[0]
+const logger = pino(
+    {
+        level: 'debug',
+        timestamp: pino.stdTimeFunctions.isoTime
+    },
+    pino.transport({
+        targets: [
+            {
+                level: 'debug',
+                target: 'pino-pretty',
+                options: {
+                    colorize: true,
+                    singleLine: true
+                }
+            },
+            {
+                level: 'debug',
+                target: 'pino/file',
+                options: {
+                    destination: `${today}.log`,
+                },
+            }
+        ]
+    })
+);
 
 const app = express();
 app.use(cors());
 const port = 2525; // Bus # in Speed
 
 app.get('/', (req,res) => {
+    logger.info({
+        msg: 'Got pinged!',
+        headers: req.headers
+    })
     res.send('Hi');
 })
 
@@ -60,3 +80,7 @@ app.get('/date/:date/', async(req,res) => {
 })
 
 app.listen(port, logger.debug(`Server is listening on port ${port}`));
+process.on('SIGINT', () => {
+    logger.debug('Shutting down...')
+    process.exit()
+})
