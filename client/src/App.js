@@ -10,7 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { Backdrop, CircularProgress } from '@mui/material';
 import dayjs from 'dayjs';
 
-const API_host = "http://157.245.23.215";
+const API_host = "https://kleinerbur-mozi.cloud";
 // const API_HOST = "http://localhost:2525" // dev
 
 function App() {
