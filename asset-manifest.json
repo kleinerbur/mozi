@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/mozi/static/css/main.1e1adf3b.css",
-    "main.js": "/mozi/static/js/main.1c8ac0e8.js",
+    "main.js": "/mozi/static/js/main.744ae69c.js",
     "static/js/787.c4e7f8f9.chunk.js": "/mozi/static/js/787.c4e7f8f9.chunk.js",
     "index.html": "/mozi/index.html",
     "main.1e1adf3b.css.map": "/mozi/static/css/main.1e1adf3b.css.map",
-    "main.1c8ac0e8.js.map": "/mozi/static/js/main.1c8ac0e8.js.map",
+    "main.744ae69c.js.map": "/mozi/static/js/main.744ae69c.js.map",
     "787.c4e7f8f9.chunk.js.map": "/mozi/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1e1adf3b.css",
-    "static/js/main.1c8ac0e8.js"
+    "static/js/main.744ae69c.js"
   ]
 }
