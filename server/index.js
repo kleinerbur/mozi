@@ -1,4 +1,3 @@
-import http  from 'http';
 import https from 'https';
 
 import fs      from 'fs';
@@ -36,10 +35,10 @@ const logger = pino(
 );
 
 const app = express(cors());
-const port = 2525; // Bus # in Speed
+const port = 443;
 const ssl_config = {
-    // key:  fs.readFileSync('ssl/server.key', 'utf8'),
-    // cert: fs.readFileSync('ssl/server.crt', 'utf8')
+    key:  fs.readFileSync('ssl/private.key', 'utf8'),
+    cert: fs.readFileSync('ssl/certificate.crt', 'utf8')
 }
 https.createServer(ssl_config, app).listen(port, logger.debug(`Server is listening on port ${port}`));
 
