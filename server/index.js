@@ -1,3 +1,4 @@
+import http  from 'http';
 import https from 'https';
 
 import fs      from 'fs';
@@ -7,6 +8,24 @@ import pino    from 'pino';
 
 import Assistant from './Assistant.js';
 
+// Server config
+var protocol;
+var port;
+var server_config;
+if (process.argv[2] && process.argv[2] === '--insecure') {
+    protocol = http;
+    port = 2525;
+    server_config = {}
+} else {
+    protocol = https;
+    port = 443;
+    server_config = {
+        key:  fs.readFileSync('ssl/private.key', 'utf8'),
+        cert: fs.readFileSync('ssl/certificate.crt', 'utf8')
+    }
+}
+
+// Logger config
 const today = new Date().toISOString().split('T')[0]
 const logger = pino(
     {
@@ -34,16 +53,15 @@ const logger = pino(
     })
 );
 
-const app = express(cors());
-const port = 443;
-const ssl_config = {
-    key:  fs.readFileSync('ssl/private.key', 'utf8'),
-    cert: fs.readFileSync('ssl/certificate.crt', 'utf8')
-}
-https.createServer(ssl_config, app).listen(port, logger.debug(`Server is listening on port ${port}`));
+// Server initialization
+const app = express();
+app.use(cors());
+const server = protocol.createServer(server_config, app);
+server.listen(port, logger.info(`Server is listening on port ${port}`));
 
+// Server routes
 app.get('/', (req,res) => {
-    logger.info({
+    logger.debug({
         msg: 'Got pinged!',
         headers: req.headers
     })
@@ -87,12 +105,21 @@ app.get('/date/:date/', async(req,res) => {
     }
 })
 
+// Event handlers
+server.once('error', (err) => {
+    logger.fatal(err)
+});
+
 process.on('SIGINT', () => {
-    logger.debug('[SIGINT] Shutting down...')
-    process.exit()
+    logger.warn('[INTERRUPTED]');
+    process.exit();
 })
 
 process.on('SIGTERM', () => {
-    logger.debug('[SIGTERM] Shutting down...')
-    process.exit()
+    logger.warn('[TERMINATED]');
+    process.exit();
+})
+
+process.on('exit', () => {
+    logger.info('Shutting down...');
 })

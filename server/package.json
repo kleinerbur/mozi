@@ -5,9 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "dev": "supervisor index.js",
-    "test": "echo \"Error: no test specified\""
+    "start":     "node index.js",
+    "dev":       "node index.js --insecure",
+    "dev_watch": "supervisor -- index.js --insecure",
+    "test":      "echo \"Error: no test specified\""
   },
   "author": "kleinerbur",
   "license": "GPL-3.0-or-later",
