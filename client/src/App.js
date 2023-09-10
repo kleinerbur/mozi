@@ -9,9 +9,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { Backdrop, CircularProgress } from '@mui/material';
 import dayjs from 'dayjs';
+import 'dayjs/locale/hu';
 
 const API_host = "https://kleinerbur-mozi.cloud";
-// const API_HOST = "http://localhost:2525" // dev
+// const API_host = "http://localhost:2525" // dev
 
 function App() {
     const today = new Date();
@@ -40,7 +41,7 @@ function App() {
     return (
     <div className="App">
         <div className="App-header">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="hu">
                 <DatePicker className='datePicker'
                     value={dayjs(date)}
                     minDate={dayjs(today)}
