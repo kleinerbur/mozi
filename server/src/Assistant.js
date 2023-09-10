@@ -1,15 +1,15 @@
-var ArtMozi    = require('./cinema/ArtMozi');
-var Corvin     = require('./cinema/Corvin');
-var CinemaCity = require('./cinema/CinemaCity');
+const ArtMozi    = require('./cinema/ArtMozi');
+const Corvin     = require('./cinema/Corvin');
+const CinemaCity = require('./cinema/CinemaCity');
 
 class Assistant {
-    constructor() {
+    constructor(requestID) {
         this.films    = [];
         this.showings = [];
         this.cinemas  = [
-            new ArtMozi(),
-            new Corvin(),
-            new CinemaCity()
+            new ArtMozi(requestID),
+            new Corvin(requestID),
+            new CinemaCity(requestID)
         ]
     }
 

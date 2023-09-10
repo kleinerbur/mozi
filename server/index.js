@@ -1,9 +1,7 @@
-const fs = require('fs');
-const express = require('express');
-const cors = require('cors');
+const { v4: uuidv4 } = require('uuid');
 
-const logger = require('./src/logger')
-var Assistant = require('./src/Assistant');
+const logger = require('./src/logger');
+const Assistant = require('./src/Assistant');
 
 // Server config
 var protocol;
@@ -16,6 +14,7 @@ if (process.argv[2] && process.argv[2] === '--insecure') {
 } else {
     protocol = require('https');
     port = 443;
+    const fs = require('fs');
     server_config = {
         key:  fs.readFileSync('ssl/private.key', 'utf8'),
         cert: fs.readFileSync('ssl/certificate.crt', 'utf8')
@@ -23,8 +22,8 @@ if (process.argv[2] && process.argv[2] === '--insecure') {
 }
 
 // Server initialization
-const app = express();
-app.use(cors());
+const app = require('express')();
+app.use(require('cors')());
 const server = protocol.createServer(server_config, app);
 server.listen(port, logger.info(`Server is listening on port ${port}`));
 
@@ -38,16 +37,19 @@ app.get('/', (req,res) => {
 })
 
 app.get('/date/:date/', async(req,res) => {
-    const assistant = new Assistant();
+    req.id = uuidv4();
+    const assistant = new Assistant(req.id);
     logger.info({
-        msg: "New request", 
-        params: req.params
+        msg: "New request",
+        params: req.params,
+        requestId: req.id
     });
     if (/\d{4}-\d{2}-\d{2}$/.test(req.params.date)) {
         const date = new Date(Date.parse(req.params.date));
         logger.debug({
             msg: `Parsed date: ${date.toISOString().split('T')[0]}`,
-            params: req.params
+            params: req.params,
+            requestId: req.id
         });
         await assistant.pull(date);
         res.send({
@@ -58,12 +60,14 @@ app.get('/date/:date/', async(req,res) => {
         logger.info({
             msg: `Response sent successfully`,
             n_films: assistant.films.length,
-            n_showings: assistant.showings.length
+            n_showings: assistant.showings.length,
+            requestId: req.id
         });
     } else {
         logger.error({
             msg: "Invalid request",
-            params: req.params
+            params: req.params,
+            requestId: req.id
         });
         res.status(400);
         res.send({
