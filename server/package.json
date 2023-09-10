@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Backend server that pulls showing info on a given date from supported theatres in Budapest.",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start":     "node index.js",
     "dev":       "node index.js --insecure",

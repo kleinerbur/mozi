@@ -1,57 +1,26 @@
-import http  from 'http';
-import https from 'https';
+const fs = require('fs');
+const express = require('express');
+const cors = require('cors');
 
-import fs      from 'fs';
-import express from 'express';
-import cors    from 'cors';
-import pino    from 'pino';
-
-import Assistant from './Assistant.js';
+const logger = require('./src/logger')
+var Assistant = require('./src/Assistant');
 
 // Server config
 var protocol;
 var port;
 var server_config;
 if (process.argv[2] && process.argv[2] === '--insecure') {
-    protocol = http;
+    protocol = require('http');
     port = 2525;
     server_config = {}
 } else {
-    protocol = https;
+    protocol = require('https');
     port = 443;
     server_config = {
         key:  fs.readFileSync('ssl/private.key', 'utf8'),
         cert: fs.readFileSync('ssl/certificate.crt', 'utf8')
     }
 }
-
-// Logger config
-const today = new Date().toISOString().split('T')[0]
-const logger = pino(
-    {
-        level: 'debug',
-        timestamp: pino.stdTimeFunctions.isoTime
-    },
-    pino.transport({
-        targets: [
-            {
-                level: 'debug',
-                target: 'pino-pretty',
-                options: {
-                    colorize: true,
-                    singleLine: true
-                }
-            },
-            {
-                level: 'debug',
-                target: 'pino/file',
-                options: {
-                    destination: `logs/${today}.log`,
-                },
-            }
-        ]
-    })
-);
 
 // Server initialization
 const app = express();
@@ -82,7 +51,7 @@ app.get('/date/:date/', async(req,res) => {
         });
         await assistant.pull(date);
         res.send({
-            films: assistant.films,
+            films:    assistant.films,
             showings: assistant.showings
         });
         res.status(200);
@@ -98,7 +67,7 @@ app.get('/date/:date/', async(req,res) => {
         });
         res.status(400);
         res.send({
-            films: [],
+            films:    [],
             showings: [],
             error: `Invalid date format: '${req.params.date}' (the only supported format is 'yyyy-mm-dd')`
         });

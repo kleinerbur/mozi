@@ -1,4 +1,4 @@
-import Showing from './common/Showing.js';
+var Showing = require('./common/Showing');
 
 class ArtMozi {
     constructor() {
@@ -51,4 +51,4 @@ class ArtMozi {
     }
 }
 
-export default ArtMozi;
+module.exports = ArtMozi;

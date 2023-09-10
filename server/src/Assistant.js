@@ -1,12 +1,13 @@
-import ArtMozi from "./cinema/ArtMozi.js";
-import Corvin from "./cinema/Corvin.js";
-import CinemaCity from "./cinema/CinemaCity.js";
+var ArtMozi = require('./cinema/ArtMozi');
+var Corvin = require('./cinema/Corvin');
+var CinemaCity = require('./cinema/CinemaCity');
 
 class Assistant {
     constructor() {
         this.films = [];
         this.showings = [];
         this.currentDate = new Date();
+
         this.artmozi = new ArtMozi();
         this.corvin  = new Corvin();
         this.cinemacity = new CinemaCity();
@@ -29,4 +30,4 @@ class Assistant {
     }
 }
 
-export default Assistant;
+module.exports = Assistant;

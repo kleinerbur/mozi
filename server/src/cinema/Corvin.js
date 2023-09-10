@@ -1,4 +1,4 @@
-import ArtMozi from "./ArtMozi.js";
+var ArtMozi = require('./ArtMozi');
 
 class Corvin extends ArtMozi{
     constructor() {
@@ -11,4 +11,4 @@ class Corvin extends ArtMozi{
     }
 };
 
-export default Corvin;
+module.exports = Corvin;

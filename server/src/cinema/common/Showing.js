@@ -17,4 +17,4 @@ class Showing {
     };
 }
 
-export default Showing;
+module.exports = Showing;

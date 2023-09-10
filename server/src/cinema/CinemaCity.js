@@ -1,4 +1,4 @@
-import Showing from "./common/Showing.js";
+var Showing = require('./common/Showing');
 
 class CinemaCity {
     constructor() {
@@ -56,4 +56,4 @@ class CinemaCity {
     }
 }
 
-export default CinemaCity;
+module.exports = CinemaCity;
